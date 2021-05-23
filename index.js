@@ -35,16 +35,24 @@ sequelize.sync({ force: false })
     });
 
 var mainRouter = require("./router/main");
-var choiceRouter = require("./router/choice");
+
+var NewOrContinueRouter = require("./router/NewOrContinue");
+var SignUpRouter = require("./router/SignUp");
+var tutorialRouter = require("./router/tutorial");
+var MainPageRouter = require("./router/MainPage");
 var loginRouter = require("./router/login");
 var registerRouter = require("./router/register");
+
 
 app.use(morgan("dev"));
 app.use(express.json());
 app.use(express.urlencoded({extended: false}));
 
 app.use('/',mainRouter);
-app.use('/choice',choiceRouter);
+app.use('/NewOrContinue',NewOrContinueRouter);
+app.use('/SignUp',SignUpRouter);
+app.use('/tutorial',tutorialRouter);
+app.use('/MainPage',MainPageRouter);
 app.use('/login',loginRouter);
 app.use('/register',registerRouter);
 
