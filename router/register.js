@@ -9,7 +9,7 @@ router.route('/')
             res.render('main');
         } else {
             console.log('[Ragister GET] Register page loading...');
-            res.render('main');
+            res.render('register');
         }
     })
     .post(async (req, res, next) => {
@@ -20,30 +20,33 @@ router.route('/')
 
             console.log("Try to add user");
             var salt = crypto.randomBytes(64).toString("base64");
+            
             var hashPw = crypto
                 .pbkdf2Sync(pw, salt, 100, 64, "sha512")
                 .toString("base64");
-            console.log(hashPw);
 
             const addUser = await User.create({
                 nickname: nick,
                 username: id,
                 password: hashPw,
                 salt: salt,
-                permission: 0,
             });
 
             console.log("Success to INSERT new user");
-            loginPage(req, res, "Register success. Try login!");
+            res.render("main")
+            //loginPage(req, res, "Register success. Try login!");
         } catch (err) {
+            console.log(err);
             console.log("Failed to INSERT new user");
-            registerPage(req, res, "Register failed, DB error");
+            res.render("register")
+            //registerPage(req, res, "Register failed, DB error");
         }
     })
 
 router.route('/idcheck')
     .post(async (req, res, next) => {
         console.log("[POST] ID Check");
+        console.log(req.body);
         const idcheck = await User.findOne({
             where: {
                 username: req.body.id

@@ -44,15 +44,11 @@ router.route('/')
                     var logged = login.username;
 
                     if (logged) {
-                        if (login.permission == 0) {
-                            res.render('login', { msg: "permission denied" });
-                            console.log("Permisson Denied");
-                        } else {
                             req.session.loggedin = true;
                             req.session.uid = id;
                             res.redirect('/');
                             console.log("Permisson OK!");
-                        }
+                        
                     }
                 } catch (err) {
                     console.error(err);

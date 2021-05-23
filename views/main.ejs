@@ -5,27 +5,13 @@
     <body>
         <h1>부대냥 키우기</h1>
 
-        <form>
-            ID : <input id='userid' type='text'/><br>
-            비밀번호 : <input id='pwd' type='password'/>
-        </form>
-        
-        <form action="/NewOrContinue" method="get">
+        <form action="/login" method="POST">
+            ID : <input name='id' id='id' type='text'/><br>
+            비밀번호 : <input name='pw' id='pw' type='password'/>
             <button type="submit"> 로그인 </button>
         </form>
         <h2>계정이 없으신가요?<h2>
-        <a href="/SignUp">회원가입</a>
-        
-
-        <form action="/register" method="post">
-            <label>nickname</label>
-            <input type="text" name="nick" id="nick"><br>
-            <label>id</label>
-            <input type="text" name="id" id="id"><br>
-            <label>password</label>
-            <input type="text" name="pw" id="pw"><br>
-            <button type="submit"> reg</button>
-        </form>
+        <a href="/register">회원가입</a>
 
     </body>
 </html>

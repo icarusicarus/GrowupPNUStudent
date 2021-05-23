@@ -20,14 +20,9 @@ module.exports = class User extends Sequelize.Model {
                 type: Sequelize.STRING(100),
                 allowNull: false,
             },
-            created_at: {
-                type: 'TIMESTAMP',
-                defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
-                allowNull: false,
-            },
         }, {
             sequelize,
-            timestamps: false,
+            timestamps: true,
             underscored: false,
             modelName: 'User',
             tableName: 'users',

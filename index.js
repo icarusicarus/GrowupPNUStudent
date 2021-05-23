@@ -2,7 +2,6 @@ const express = require("express");
 const morgan = require("morgan");
 const path = require("path");
 const dotenv = require("dotenv");
-var bodyParser = require("body-parser");
 var expressSession = require("express-session");
 var mysql = require("mysql");
 
@@ -46,7 +45,7 @@ var registerRouter = require("./router/register");
 
 app.use(morgan("dev"));
 app.use(express.json());
-app.use(express.urlencoded({extended: false}));
+app.use(express.urlencoded({extended: true}));
 
 app.use('/',mainRouter);
 app.use('/NewOrContinue',NewOrContinueRouter);
