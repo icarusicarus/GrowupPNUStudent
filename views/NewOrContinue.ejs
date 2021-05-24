@@ -1,9 +1,16 @@
 <!DOCTYPE html>
 <html>
-    <head><title>main page</title></head>
+    <head>
+        <title>main page</title>
+        
+        <script language="javascript">
+            function showPopup() { window.open("/tutorial", "tutorialpopup", "width=600, height=600, left=100, top=50"); }
+        </script>
+
+    </head>
     <body>
-        <form action="/tutorial" method="get">
-            <button type="submit"> 새 게임 </button>
+        <form>
+            <input type="button" value="새 게임" onclick="showPopup();" />
         </form>
         <form action="/MainPage" method="get">
             <button type="submit"> 이어하기 </button>
