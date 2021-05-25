@@ -4,20 +4,27 @@
         #centerWindow { position:absolute; width:100px; height:100px; 
                         top:50%; left:50%; margin-top:-50px; margin-left:-50px; }
     </style>
+    <script language="javascript">
+        function moveClose() {
+          opener.location.href="/MainPage";
+          self.close();
+        }
+    </script>
+
 
     <head><title>main page</title></head>
     <body>
 
-        <div id="centerWindow">나는 윤회를 관장하는 신이다.
-            너의 남은 수명은 10일이다. 내 특별히 너에게 다음 생을 인간으로 태어날 수 있는 기회를 주겠다.
-             너의 행동에 따라 어떤 사람으로 태어날 것인지가 결정될 것이다. 그럼 남은 시간동안 잘 살아보거라...</div>
+        <div id="centerWindow">
+        </div>
+
+        나는 윤회를 관장하는 신이다.
+        너의 남은 수명은 10일이다. 내 특별히 너에게 다음 생을 인간으로 태어날 수 있는 기회를 주겠다.
+        너의 행동에 따라 어떤 사람으로 태어날 것인지가 결정될 것이다. 그럼 남은 시간동안 잘 살아보거라...
        
 
          
-       
+        <input type="button" value="확인" onclick="moveClose();" />
         <!--  튜토리얼, 확인버튼 누를시 MainPage로 넘어감 -->
-        <form action="/MainPage" method="get">
-            <button type="submit"> 확인 </button>
-        </form>
     </body>
 </html>
