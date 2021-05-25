@@ -6,41 +6,83 @@
         <p>시간표</p>
         <p id='test'></p>
         
-        <table id='table', border="1"></table>
+        <table id='subjectTable' ></table>
         <br>
-        <table border="1">
-            <tr><th>시간</th><th>9</th><th>10</th><th>11</th><th>12</th><th>13</th><th>14</th><th>15</th><th>16</th><th>17</th></tr>
-            <tr><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td></tr>
+        <table id='myTable'>
+            <tr height="30"><th>시간</th><th>9</th><th>10</th><th>11</th><th>12</th><th>13</th><th>14</th><th>15</th><th>16</th><th>17</th></tr>
+            <tr id='mycells' height="50"><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td></tr>
         </table>
         <button>수강신청</button>
         
     </body>
+    <style>
+        table, td, th{
+            border:1px solid #444444;
+            
+        }
+        th, td{
+            text-align:center;
+            width:100px;
+            height:50px;
+        }
+        th{
+            height:30px;
+            background-color:dimgrey;
+            color: floralwhite;
+        }
+        .area0{background-color:lightgrey;}
+        .area1{background-color:palegoldenrod;}
+        .area2{background-color:lightcoral;}
+        .area3{background-color:sandybrown;}
+        .area4{background-color:lightblue;}
+        .area5{background-color:mediumpurple;}
+        .area6{background-color:pink;}
+        .area7{background-color:mediumseagreen;}
+    </style>
     <script>
         var subjectlist=[
-            {area:0, name:"컴퓨팅사고와 인공지능", hours:1},    //no.0
-            {area:0, name:"기초컴퓨터프로그래밍", hours:1},     //no.1
-            {area:0, name:"고전읽기와토론", hours:2},           //no.2
-            {area:1, name:"교양으로서의 고고학", hours:3},      //no.3
-            {area:2, name:"일본 문화의 이해", hours:3}          //no.4
+            {area:0, name:"컴퓨팅사고와 인공지능", hours:1},            //no.0
+            {area:0, name:"기초컴퓨터프로그래밍", hours:1},             //no.1
+            {area:0, name:"고전읽기와토론", hours:2},                   //no.2
+            {area:1, name:"교양으로서의 고고학", hours:3},              //no.3
+            {area:2, name:"일본 문화의 이해", hours:3},                //no.4
+            {area:2, name:"금융/증권보험분쟁과피해자구제", hours:3},    //no.5
+            {area:3, name:"한국 음악과 영화", hours:1},                 //no.6
+            {area:3, name:"현대예술로 만나는 지역", hours:2},          //no.7
+            {area:4, name:"수학", hours:3},                           //no.8
+            {area:4, name:"뇌과학과 창의성", hours:2},                  //no.9
+            {area:5, name:"현대사회와 스포츠", hours:1},                //no.10
+            {area:7, name:"예술과정치", hours:2},                       //no.11
+            {area:7, name:"감염병과 사회의 변화", hours:3}              //no.12
+            
+            
         ];            
         var day_3=[
             {no:0, row_num:0, start_time:0 },
             {no:3, row_num:0, start_time:3 },
+            {no:5, row_num:0, start_time:6 },
             {no:2, row_num:1, start_time:1 },
-            {no:4, row_num:2, start_time:2 }
+            {no:7, row_num:1, start_time:4 },
+            {no:9, row_num:1, start_time:7 },
+            {no:6, row_num:2, start_time:0 },
+            {no:4, row_num:2, start_time:2 },
+            {no:11, row_num:2, start_time:6 },
+            {no:8, row_num:3, start_time:1 },
+            {no:10, row_num:3, start_time:5 },
+            {no:12, row_num:3, start_time:6 },
         ];
         //===========================================================================================================================
         //위의 subjectlist와 day_num 리스트만 주어진다면 다음 table을 만드는 것이 가능하다.
         var i,j,k=0;
         var str2='<tr><th>시간</th><th>9</th><th>10</th><th>11</th><th>12</th><th>13</th><th>14</th><th>15</th><th>16</th><th>17</th></tr><tr><td rowspan=\"4\"></td>';
-
+        
         for(i=0;i<4;i++){
             if(i!=0){
                 str2+='<tr>';
             }
             for(j=0;j<9;j++){
                 if(k<day_3.length&&day_3[k].row_num==i&&day_3[k].start_time==j){
-                    str2+='<td colspan=\"'+subjectlist[day_3[k].no].hours+'\">'+subjectlist[day_3[k].no].name+'</td>';
+                    str2+='<td title="과목 코드 : '+day_3[k].no+'" class="subject area'+subjectlist[day_3[k].no].area+'" colspan=\"'+subjectlist[day_3[k].no].hours+'\">'+subjectlist[day_3[k].no].name+'</td>';
                     j+=(subjectlist[day_3[k].no].hours-1);
                     k+=1;
                 }else{
@@ -51,10 +93,37 @@
             str2+='</tr>';
             
         }
-        
-        document.getElementById('table').innerHTML=str2;
+        const sugang_table=document.getElementById('subjectTable');
+        sugang_table.innerHTML=str2;
         //=========================================================================================================================
+        const cells=sugang_table.getElementsByClassName('subject'); //class명에 subject를 포함하고 있는 element 전체
+        var myarr=[];   //임시시간표에 담긴 과목들의 과목 코드를 담을 배열
+        var arrlen=0;
+        for(let x=0;i<cells.length;x++){    //x의 값은 day_num의 index와 같다.
+            cells[x].addEventListener('click',(e)=>{    //교과목이 표시된 셀을 클릭할 시 일어나는 이벤트
+                var str='<td></td>';
+                for(i=0;i<9;i++){
+                    if(i==day_3[x].start_time){
+                        str+='<td class="subject area'+subjectlist[day_3[x].no].area+'" colspan=\"'+subjectlist[day_3[x].no].hours+'\">'+subjectlist[day_3[x].no].name+'</td>'
+                        i+=(subjectlist[day_3[x].no].hours-1);
+                    }else{
+                        str+='<td></td>';
+                    }
+                    
+                    
+                }
+                document.getElementById('mycells').innerHTML=str;
+                
+                document.getElementById('test').innerHTML=x;
+            });
+            cells[x].addEventListener('mouseover',(e)=>{    //교과목이 표시된 셀에 마우스 커서를 올릴 시 일어나는 이벤트
+                
+            });
+        }
 
+
+
+        document.getElementById('test').innerHTML=cells.length;
     </script>
     
     
