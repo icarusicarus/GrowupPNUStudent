@@ -5,12 +5,12 @@
         <p>수강신청</p>
         <p>시간표</p>
         <p id='test'></p>
-        
+        <p id='test2'></p>
         <table id='subjectTable' ></table>
         <br>
-        <table id='myTable'>
+        <table id='TimeTable'>
             <tr height="30"><th>시간</th><th>9</th><th>10</th><th>11</th><th>12</th><th>13</th><th>14</th><th>15</th><th>16</th><th>17</th></tr>
-            <tr id='mycells' height="50"><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td></tr>
+            <tr id='cells' height="50"><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td><td> </td></tr>
         </table>
         <button>수강신청</button> 
         
@@ -72,7 +72,7 @@
             {no:12, row_num:3, start_time:6 },
         ];
         //===========================================================================================================================
-        //위의 subjectlist와 day_num 리스트만 주어진다면 다음 table을 만드는 것이 가능하다.
+        //위의 subjectlist와 day_num 리스트만 주어진다면 다음 코드가 수강신청표 table을 생성한다.
         var i,j,k=0;
         var str2='<tr><th>시간</th><th>9</th><th>10</th><th>11</th><th>12</th><th>13</th><th>14</th><th>15</th><th>16</th><th>17</th></tr><tr><td rowspan=\"4\"></td>';
         
@@ -95,35 +95,86 @@
         }
         const sugang_table=document.getElementById('subjectTable');
         sugang_table.innerHTML=str2;
+        const mytable=document.getElementById('TimeTable');
+        const mycells=mytable.getElementsByClassName('mysubject');
         //=========================================================================================================================
+
         const cells=sugang_table.getElementsByClassName('subject'); //class명에 subject를 포함하고 있는 element 전체
-        var myarr=[];   //임시시간표에 담긴 과목들의 과목 코드를 담을 배열
-        var arrlen=0;
-        for(let x=0;i<cells.length;x++){    //x의 값은 day_num의 index와 같다.
+        var cellstr=["<td></td>","<td></td>","<td></td>","<td></td>","<td></td>","<td></td>","<td></td>","<td></td>","<td></td>"];     //총 9개의 셀
+        var subarr=[]; //시간표에 추가된 과목의 day_3에서의 인덱스
+        var arri=0;     //subarr의 원소 개수(크기)
+        //ex)cellstr[0]은 9시, cellstr[1]은 10시의 셀을 나타냄
+        
+        //==================================메인페이지로부터 전달받은 cellstr과 과목 list가 있으면 다음 코드로 시간표에 수업을 추가하는 기능이 구현된다.====================
+        for(let x=0;x<cells.length;x++){    //x의 값은 day_num의 index와 같다.
             cells[x].addEventListener('click',(e)=>{    //교과목이 표시된 셀을 클릭할 시 일어나는 이벤트
-                var str='<td></td>';
-                for(i=0;i<9;i++){
-                    if(i==day_3[x].start_time){
-                        str+='<td class="subject area'+subjectlist[day_3[x].no].area+'" colspan=\"'+subjectlist[day_3[x].no].hours+'\">'+subjectlist[day_3[x].no].name+'</td>'
-                        i+=(subjectlist[day_3[x].no].hours-1);
-                    }else{
-                        str+='<td></td>';
+                let isoverlap=false;    //중복 여부를 확인하기위한 플래그
+                for(let y=0;y<subjectlist[day_3[x].no].hours;y++){
+                    if(cellstr[day_3[x].start_time+y]!='<td></td>') isoverlap=true; //추가하고자 하는 시간 범위에 빈 단일 셀이 아닌 게 있을 경우
+                }
+
+                if(isoverlap){
+                    alert('시간표가 중복됩니다!');
+                }else{              //중복이 아닐 경우
+                    cellstr[day_3[x].start_time]='<td class="mysubject area'+subjectlist[day_3[x].no].area+'" colspan="'+subjectlist[day_3[x].no].hours+'">'+subjectlist[day_3[x].no].name+'</td>';
+                    subarr[arri++]=x;     //day_num의 index
+
+                    for(let y=1;y<subjectlist[day_3[x].no].hours;y++){
+                        cellstr[day_3[x].start_time+y]="";
                     }
                     
                     
+                    document.getElementById('cells').innerHTML="<td></td>";
+                    for(x in cellstr){
+                        document.getElementById('cells').innerHTML+=cellstr[x];
+                    }
+
+
+                    document.getElementById('test2').innerHTML=arri;
+
+                    mycells=mytable.getElementsByClassName('mysubject');
+                    //mycells=mytable.getElementsByClassName('mysubject'); //class명에 mysubject를 포함하고 있는 element 전체(시간표에 추가된 수업)
+
+                    
+
                 }
-                document.getElementById('mycells').innerHTML=str;
                 
-                document.getElementById('test').innerHTML=x;
             });
-            cells[x].addEventListener('mouseover',(e)=>{    //교과목이 표시된 셀에 마우스 커서를 올릴 시 일어나는 이벤트
+
+            cells[x].addEventListener('mouseover',(e)=>{    //수강신청표에서 교과목이 표시된 셀에 마우스 커서를 올릴 시 일어나는 이벤트
                 
+            });
+        }
+
+        for(let t=0;t<arri;t++){    //mycells.length는 현재 시간표에 추가된 과목의 개수와 같다
+            mycells[t].addEventListener('click',(e)=>{    //교과목이 표시된 셀을 클릭할 시 일어나는 이벤트
+                document.getElementById('test').innerHTML="click mysub";
+                //subarr[t]=>
+                            
+                cellstr[day_3[subarr[t]].start_time]='<td></td>';
+                for(let y=1;y<subjectlist[day_3[subarr[t]].no].hours;y++){
+                    cellstr[day_3[subarr[t]].start_time+y]="<td></td>";
+                }
+                for(let s=t;s<arri-1;s++)
+                    subarr[t]=subarr[t+1];
+                arri--;
+
+
+                document.getElementById('cells').innerHTML="<td></td>";
+                for(x in cellstr){
+                    document.getElementById('cells').innerHTML+=cellstr[x];
+                }
+                            
+                document.getElementById('test2').innerHTML=arri;
+            });
+
+            mycells[t].addEventListener('mouseover',(e)=>{    //시간표에서 교과목이 표시된 셀에 마우스 커서를 올릴 시 일어나는 이벤트
+                            
             });
         }
 
 
 
-        document.getElementById('test').innerHTML=cells.length;
     </script>
     
     
